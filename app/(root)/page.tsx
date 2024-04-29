@@ -1,5 +1,9 @@
-export default function Home() {
+import { UserButton } from "@clerk/nextjs";
+
+export default function SetupPage() {
   return (
-    <p>Hello</p>
+    <div className="p-4">
+      <UserButton />
+    </div>
   );
 }
