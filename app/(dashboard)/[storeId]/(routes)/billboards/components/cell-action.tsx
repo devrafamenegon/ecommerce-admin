@@ -3,6 +3,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import toast from "react-hot-toast";
+import { useParams, useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 
@@ -15,6 +16,9 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({
   data,
 }) => {
+  const router = useRouter();
+  const params = useParams();
+
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
     toast.success("Billboard id copied to the clipboard.")
@@ -36,7 +40,7 @@ export const CellAction: React.FC<CellActionProps> = ({
           <Copy className="mr-2 h-4 w-4" />
           Copy Id
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}>
           <Edit className="mr-2 h-4 w-4" />
           Update
         </DropdownMenuItem>
