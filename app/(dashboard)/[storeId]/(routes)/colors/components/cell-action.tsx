@@ -38,7 +38,7 @@ export const CellAction: React.FC<CellActionProps> = ({
       router.push(`/${params.storeId}/colors`);
       toast.success("Color deleted.")
     } catch(error) {
-      toast.error("Make sure you removed all products using this size first.");
+      toast.error("Make sure you removed all products using this color first.");
     } finally {
       setLoading(false);
       setOpen(false);
