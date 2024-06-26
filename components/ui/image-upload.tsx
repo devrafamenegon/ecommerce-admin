@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ImagePlus, Trash } from "lucide-react";
-import { CldUploadWidget } from "next-cloudinary"
+import { CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary"
 
 import { Button } from "./button";
 
@@ -22,13 +22,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
+  const ref = useRef<any>();
+
+  useEffect(() => {
+    ref.current = onChange;
+  }) 
+
   useEffect(() => {
     setIsMounted(true)
   }, []);
-
-  const onUpload = (result: any) => {
-    onChange(result.info.secure_url);
-  }
 
   if (!isMounted) return null;
 
@@ -49,7 +51,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           />
         </div>
       ))}
-      <CldUploadWidget onSuccess={onUpload} uploadPreset="kk5kmrcm">
+      <CldUploadWidget 
+        uploadPreset="kk5kmrcm"
+        onSuccess={(results) => {
+          if (results.info) {
+            const info = results.info as CloudinaryUploadWidgetInfo;
+            ref.current(info.secure_url);
+          }
+        }}
+      >
         {({ open }) => {
           const onClick = () => {
             open();
