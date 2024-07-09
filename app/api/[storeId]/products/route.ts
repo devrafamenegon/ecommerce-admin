@@ -140,6 +140,34 @@ export async function GET(
       return NextResponse.json(products);
     }
 
+    if (categoryId) {
+      const products = await prismadb.product.findMany({
+        where: {
+          storeId: params.storeId,
+          categoryId,
+          name: {
+            contains: name,
+            mode: 'insensitive'
+          },
+          colorId,
+          sizeId,
+          isFeatured: isFeatured ? true : undefined,
+          isArchived: false
+        },
+        include: {
+          images: true,
+          category: true,
+          color: true,
+          size: true
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      })
+
+      return NextResponse.json(products);
+    }
+
     const categories = await prismadb.category.findMany({
       where: {
         billboardId
